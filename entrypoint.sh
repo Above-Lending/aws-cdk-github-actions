@@ -63,6 +63,13 @@ function installPipRequirements(){
 function runCdk(){
 	echo "Run cdk ${INPUT_CDK_SUBCOMMAND} ${*} \"${INPUT_CDK_STACK}\""
 	set -o pipefail
+
+	if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
+		echo "Current working directory: $(pwd)"
+		echo "--- ls output ---"
+		ls -lha
+	fi
+
 	cdk ${INPUT_CDK_SUBCOMMAND} ${*} "${INPUT_CDK_STACK}" 2>&1 | tee output.log
 	exitCode=${?}
 	set +o pipefail
@@ -98,7 +105,8 @@ ${output}
 
 function main(){
 	parseInputs
-	cd ${INPUT_WORKING_DIR}
+	git config --global --add safe.directory ${GITHUB_WORKSPACE}
+	cd ${GITHUB_WORKSPACE}/${INPUT_WORKING_DIR}
 	installTypescript
 	installAwsCdk
 	installPipRequirements
