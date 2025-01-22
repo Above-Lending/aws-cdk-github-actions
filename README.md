@@ -20,7 +20,7 @@ jobs:
     steps:
 
       - name: cdk diff
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: arnaskro/aws-cdk-v2-github-actions@v2.3.0
         with:
           cdk_subcommand: 'diff'
           actions_comment: true
@@ -30,10 +30,9 @@ jobs:
           AWS_DEFAULT_REGION: 'ap-northeast-1'
 
       - name: cdk deploy
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: arnaskro/aws-cdk-v2-github-actions@v2.3.0
         with:
           cdk_subcommand: 'deploy'
-          cdk_stack: 'stack1'
           cdk_args: '--require-approval never'
           actions_comment: false
         env:
@@ -42,10 +41,10 @@ jobs:
           AWS_DEFAULT_REGION: 'ap-northeast-1'
 
       - name: cdk synth
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: arnaskro/aws-cdk-v2-github-actions@v2.3.0
         with:
           cdk_subcommand: 'synth'
-          cdk_version: '1.16.2'
+          cdk_version: '2.4.0'
           working_dir: 'src'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -53,9 +52,18 @@ jobs:
           AWS_DEFAULT_REGION: 'ap-northeast-1'
 ```
 
-### Can I use assume-role?
 
+### Can I deploy multiple stacks?
+Include the stack names in the `cdk_stack` parameter and also make sure not to include the `--all` flag in `cdk_args` parameters.
+
+```yaml
+cdk_stack: 'Stack1 Stack2'
+```
+
+
+### Can I use assume-role?
 If you use assume-role, we recommend using [awscredswrap](https://github.com/marketplace/actions/aws-assume-role-github-actions).
+
 
 See: https://github.com/marketplace/actions/aws-assume-role-github-actions#use-as-github-actions
 
@@ -67,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Assume Role
-        uses: youyo/awscredswrap@master
+        uses: arnaskro/awscredswrap@master
         with:
           role_arn: ${{ secrets.ROLE_ARN }}
           duration_seconds: 3600
@@ -78,7 +86,7 @@ jobs:
           AWS_DEFAULT_REGION: 'ap-northeast-1'
 
       - name: cdk diff
-        uses: youyo/aws-cdk-github-actions@v2
+        uses: arnaskro/aws-cdk-v2-github-actions@v2.3.0
         with:
           cdk_subcommand: 'diff'
 ```
@@ -102,7 +110,9 @@ jobs:
 - `AWS_SECRET_ACCESS_KEY` **Required**
 - `GITHUB_TOKEN` Required for `actions_comment=true`
 
+
 Recommended to get `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from secrets. The github token is [automatically made available](https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token) as a secret as `GITHUB_TOKEN`. 
+
 
 ## License
 
@@ -111,3 +121,4 @@ Recommended to get `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` from secrets.
 ## Author
 
 [youyo](https://github.com/youyo)
+[arnaskro](https://github.com/arnaskro)
