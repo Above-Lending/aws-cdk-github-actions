@@ -1,7 +1,7 @@
-FROM alpine:3.18
+FROM alpine:3.21
 
 RUN apk --update --no-cache add \
-	nodejs~18 \
+	nodejs \
 	npm \
 	python3 \
 	py3-pip \
