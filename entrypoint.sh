@@ -45,6 +45,9 @@ function installAwsCdk(){
 
 function installPipRequirements(){
 	if [ -e "requirements.txt" ]; then
+		echo "Setting up python venv"
+		python -m venv cdkvenv
+		. cdkvenv/bin/activate
 		echo "Install requirements.txt"
 		if [ "${INPUT_DEBUG_LOG}" == "true" ]; then
 			pip install -r requirements.txt
